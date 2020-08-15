@@ -2,7 +2,7 @@
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import { ResourceName } from '../lib/resource_name';
-import { CdkDockerAssetsTestStack } from '../lib/stack';
+import { RepositoryStack } from '../lib/repository';
 import { prependOnceListener } from 'process';
 
 const app = new cdk.App();
@@ -22,14 +22,14 @@ const stackEnv = {
 //==============================================================================
 
 //==============================================================================
-// generate stack
+// generate repository
 //==============================================================================
-const stack = new CdkDockerAssetsTestStack(app, 'docker-assets', {
+const stack = new RepositoryStack(app, 'repository', {
     stackName: resourceName.stackName(),
     description: `${resourceName.systemName}`,
     env: stackEnv,
     resourceName: resourceName
 });
 //==============================================================================
-// generate stack end
+// generate repository end
 //==============================================================================
