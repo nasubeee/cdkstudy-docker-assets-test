@@ -9,20 +9,21 @@ export interface RepositoryStackProps extends cdk.StackProps {
 
 export class RepositoryStack extends cdk.Stack {
     public readonly repos: ecr.Repository;
-    public readonly reposName: ssm.StringParameter;
+    public readonly reposName: string;
+    public readonly reposNameParam: ssm.StringParameter;
 
     constructor(scope: cdk.Construct, id: string, props: RepositoryStackProps) {
         super(scope, id, props);
-
+        this.reposName = props.resourceName.ecrRepositoryName(`assets`);
         this.repos = new ecr.Repository(this, `repository`, {
-            repositoryName: props.resourceName.ecrRepositoryName(`assets`),
+            repositoryName: this.reposName,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
-        this.reposName = new ssm.StringParameter(this, `repository-name`, {
+        this.reposNameParam = new ssm.StringParameter(this, `repository-name`, {
             parameterName: props.resourceName.ssmParamName(`repository/name`),
             description: `${props.resourceName.systemName} ecr repository name`,
             type: ssm.ParameterType.STRING,
-            stringValue: this.repos.repositoryName, 
+            stringValue: this.repos.repositoryName,
         });
     }
 }

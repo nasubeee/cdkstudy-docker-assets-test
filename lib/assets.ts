@@ -7,6 +7,8 @@ const path = require('path');
 
 export interface AssetsStackProps extends cdk.StackProps {
     resourceName: ResourceName;
+    reposName: string,
+    imageHash: string;
 }
 
 export class AssetsStack extends cdk.Stack {
@@ -16,10 +18,11 @@ export class AssetsStack extends cdk.Stack {
         //======================================================================
         // refer ecr repository from repository stack
         //======================================================================
-        const reposName = ssm.StringParameter.valueForStringParameter(
-            this, props.resourceName.ssmParamName(`repository/name`)
-        );
-        const repos = ecr.Repository.fromRepositoryName(this, `repository`, reposName);
+        // const reposName = ssm.StringParameter.valueForStringParameter(
+        //     this, props.resourceName.ssmParamName(`repository/name`)
+        // );
+        // const repos = ecr.Repository.fromRepositoryName(this, `repository`, reposName);
+        console.log(props.reposName);
         //======================================================================
         // refer ecr repository from repository stack
         //======================================================================
@@ -27,11 +30,25 @@ export class AssetsStack extends cdk.Stack {
         //======================================================================
         // Docker image assets
         //======================================================================
-        const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
-            directory: path.join(__dirname, 'containers'),
-        });
+        // pushed to the aws-cdk/assets repository
+        // const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
+        //     directory: path.join(__dirname, 'containers'),
+        // });
         //======================================================================
         // Docker image assets end
+        //======================================================================
+
+
+        //======================================================================
+        // Docker image assets - repository specification
+        //======================================================================
+        this.synthesizer.addDockerImageAsset({
+            directoryName: path.join(__dirname, 'containers'),
+            sourceHash: props.imageHash,
+            repositoryName: props.reposName
+        });
+        //======================================================================
+        // Docker image assets - repository specification end
         //======================================================================
     }
 }

@@ -18,6 +18,7 @@ const stackEnv = {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION
 };
+const imageHash = app.node.tryGetContext("image_hash");
 //==============================================================================
 // Get Context and define stack env end
 //==============================================================================
@@ -42,7 +43,9 @@ const assetsStack = new AssetsStack(app, 'assets', {
     stackName: resourceName.stackName(`assets`),
     description: `${resourceName.systemName}`,
     env: stackEnv,
-    resourceName: resourceName
+    resourceName: resourceName,
+    reposName: reposStack.reposName,
+    imageHash: imageHash,
 });
 //==============================================================================
 // generate docker image assets end
