@@ -1,7 +1,6 @@
 import * as cdk from '@aws-cdk/core';
-import ecr = require('@aws-cdk/aws-ecr');
-import assets = require('@aws-cdk/aws-ecr-assets');
 import ssm = require('@aws-cdk/aws-ssm');
+import assets = require('@aws-cdk/aws-ecr-assets');
 import { ResourceName } from './resource_name';
 const path = require('path');
 
@@ -18,11 +17,9 @@ export class AssetsStack extends cdk.Stack {
         //======================================================================
         // refer ecr repository from repository stack
         //======================================================================
-        // const reposName = ssm.StringParameter.valueForStringParameter(
-        //     this, props.resourceName.ssmParamName(`repository/name`)
-        // );
-        // const repos = ecr.Repository.fromRepositoryName(this, `repository`, reposName);
-        console.log(props.reposName);
+        const reposNameFromSSM = ssm.StringParameter.valueForStringParameter(
+            this, props.resourceName.ssmParamName(`repository/name`)
+        );
         //======================================================================
         // refer ecr repository from repository stack
         //======================================================================
@@ -50,5 +47,18 @@ export class AssetsStack extends cdk.Stack {
         //======================================================================
         // Docker image assets - repository specification end
         //======================================================================
+
+        //======================================================================
+        // NG PATTERN Docker image assets - repository specification
+        //======================================================================
+        // this.synthesizer.addDockerImageAsset({
+        //     directoryName: path.join(__dirname, 'containers'),
+        //     sourceHash: props.imageHash,
+        //     // Failed to deploy. Cannot use string value from ssm parameter store.
+        //     repositoryName: reposNameFromSSM
+        // });
+        // //======================================================================
+        // NG PATTERN Docker image assets - repository specification end
+        //======================================================================    
     }
 }
