@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import ssm = require('@aws-cdk/aws-ssm');
+import assets = require('@aws-cdk/aws-ecr-assets');
 import { ResourceName } from './resource_name';
 const path = require('path');
 
