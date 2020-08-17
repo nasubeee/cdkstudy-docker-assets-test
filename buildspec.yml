@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  install:
+    runtime_versions:
+      nodejs: 12
+    commands:
+      # Installs the npm dependencies as defined by the `package.json` file
+      - npm install
+      # Check cdk version
+      - npm run cdk --version
+  pre_build:
+    commands:
+      # Login ECR
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
+
+  build:
+    commands:
+      ##############################################################################################
+      # Check target system env
+      - echo "Deployed system env =" ${CDK_CONTEXT_SYSTEM_ENV}
+      - echo "Deployed image tag =" ${IMAGE_TAG}
+      # Builds the CDK App so it can be synthesized
+      - npm run build
+      # Synthesizes the CDK App
+      - npm run cdk synth -- -c env=${CDK_CONTEXT_SYSTEM_ENV} -c image_hash=${IMAGE_TAG}
+      # List Stacks
+      - npm run cdk ls -- -c env=${CDK_CONTEXT_SYSTEM_ENV} -c image_hash=${IMAGE_TAG}
+      ##############################################################################################
+      # deploy repository
+      - npm run cdk diff "repository" -- -c env=${CDK_CONTEXT_SYSTEM_ENV}
+      - npm run cdk deploy "repository" -- -c env=${CDK_CONTEXT_SYSTEM_ENV} --require-approval never
+      # deploy presistent resources stack
+      - npm run cdk diff "assets" -- -c env=${CDK_CONTEXT_SYSTEM_ENV} -c image_hash=${IMAGE_TAG}
+      - npm run cdk deploy "assets" -- -c env=${CDK_CONTEXT_SYSTEM_ENV}  -c image_hash=${IMAGE_TAG} --require-approval never

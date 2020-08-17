@@ -1,8 +1,8 @@
 {
   "name": "cdk-docker-assets-test",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "bin": {
-    "cdk-docker-assets-test": "bin/cdk-docker-assets-test.js"
+    "cdk-docker-assets-test": "bin/app.js"
   },
   "scripts": {
     "build": "tsc",
@@ -11,17 +11,23 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.58.0",
+    "@aws-cdk/assert": "1.59.0",
     "@types/jest": "^25.2.1",
     "@types/node": "10.17.5",
-    "jest": "^25.5.0",
+    "jest": "^26.0.4",
     "ts-jest": "^25.3.1",
-    "aws-cdk": "1.58.0",
+    "aws-cdk": "1.59.0",
     "ts-node": "^8.1.0",
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/core": "1.58.0",
+    "@aws-cdk/aws-ec2": "^1.59.0",
+    "@aws-cdk/aws-ecr": "^1.59.0",
+    "@aws-cdk/aws-ecr-assets": "^1.59.0",
+    "@aws-cdk/aws-ecs": "^1.59.0",
+    "@aws-cdk/aws-iam": "^1.59.0",
+    "@aws-cdk/aws-ssm": "^1.59.0",
+    "@aws-cdk/core": "1.59.0",
     "source-map-support": "^0.5.16"
   }
 }
