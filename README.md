@@ -2,9 +2,11 @@
 
 [AWS CDK](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html)では，
 各種AWSリソースと合わせて，コンテナイメージをデプロイすることができる．
+
 ここでは，コンテナイメージがどのリポジトリにpushされるかを調べるため，動作テストを行った．
 
 CDKは，2020/08/17時点での最新バージョンであるver1.59.0を使用した．
+
 DockerImageAssets関連の実装は，`experimental and under active development`とのことで，
 今後のアップデートで破壊的変更が行われる可能性があるので，最新情報を確認して使用する必要がある．
 
@@ -21,7 +23,10 @@ const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
 ```
 
 この場合，`aws-cdk/assets`というECRリポジトリが自動的に作成され，そこにビルドされたイメージがpushされた．
-イメージのタグは，
+
+イメージのタグは，CDKが自動的に採番したものになった．
+
+![リポジトリ名を指定しない場合のDocker Image](doc/ecr-repos-wo-specify.jpg)
 
 ## リポジトリ名を指定する場合
 
@@ -62,9 +67,18 @@ export class AssetsStack extends cdk.Stack {
 ```
 
 注意点は，
+
 - リポジトリ名はSSMパラメータストア等からデプロイ時に取得する実装は不可．
 - sourceHashに指定するイメージタグ名を変更しない場合は，Dockerfileを変更しても新たなイメージがpushされない．
-という点である．特に2つ目の点は注意が必要である．このプロジェクトでは，CI/CDパイプラインでgitコミットハッシュから
-イメージタグ名を決定し，それをcdk context valueとして与えるようにして，毎回新しいイメージが生成されるようにした．
+
+という点である．
+
+特に2点目は注意が必要である．
+
+このプロジェクトでは，CI/CDパイプラインでgitコミットハッシュからイメージタグ名を決定し，
+
+それをcdk context valueとして与えるようにして，毎回新しいイメージが生成されるようにした．
+
+![リポジトリ名を指定した場合のDocker Image](doc/ecr-repos.jpg)
 
 以上．
