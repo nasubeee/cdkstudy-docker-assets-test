@@ -14,23 +14,14 @@ export class AssetsStack extends cdk.Stack {
 
     constructor(scope: cdk.Construct, id: string, props: AssetsStackProps) {
         super(scope, id, props);
-        //======================================================================
-        // refer ecr repository from repository stack
-        //======================================================================
-        const reposNameFromSSM = ssm.StringParameter.valueForStringParameter(
-            this, props.resourceName.ssmParamName(`repository/name`)
-        );
-        //======================================================================
-        // refer ecr repository from repository stack
-        //======================================================================
 
         //======================================================================
         // Docker image assets
         //======================================================================
         // pushed to the aws-cdk/assets repository
-        // const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
-        //     directory: path.join(__dirname, 'containers'),
-        // });
+        const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
+            directory: path.join(__dirname, 'containers'),
+        });
         //======================================================================
         // Docker image assets end
         //======================================================================
@@ -51,6 +42,9 @@ export class AssetsStack extends cdk.Stack {
         //======================================================================
         // NG PATTERN Docker image assets - repository specification
         //======================================================================
+        // const reposNameFromSSM = ssm.StringParameter.valueForStringParameter(
+        //     this, props.resourceName.ssmParamName(`repository/name`)
+        // );
         // this.synthesizer.addDockerImageAsset({
         //     directoryName: path.join(__dirname, 'containers'),
         //     sourceHash: props.imageHash,
