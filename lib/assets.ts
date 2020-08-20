@@ -16,27 +16,38 @@ export class AssetsStack extends cdk.Stack {
         super(scope, id, props);
 
         //======================================================================
-        // Docker image assets
+        // [@aws-cdk/aws-ecr-assets] Docker image assets
         //======================================================================
         // pushed to the aws-cdk/assets repository
+        // const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
+        //     directory: path.join(__dirname, 'containers'),
+        // });
+        //======================================================================
+        // [@aws-cdk/aws-ecr-assets] Docker image assets end
+        //======================================================================
+
+        //======================================================================
+        // [@aws-cdk/aws-ecr-assets] Docker image assets - repository specification
+        //======================================================================
         const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
             directory: path.join(__dirname, 'containers'),
+            repositoryName: props.reposName,
+            extraHash: props.imageHash,
         });
         //======================================================================
-        // Docker image assets end
+        // [@aws-cdk/aws-ecr-assets] Docker image assets - repository specification end
         //======================================================================
 
-
         //======================================================================
-        // Docker image assets - repository specification
+        // [@aws-cdk/core Stack.synthesizer] Docker image assets - repository specification
         //======================================================================
-        this.synthesizer.addDockerImageAsset({
-            directoryName: path.join(__dirname, 'containers'),
-            sourceHash: props.imageHash,
-            repositoryName: props.reposName
-        });
+        // this.synthesizer.addDockerImageAsset({
+        //     directoryName: path.join(__dirname, 'containers'),
+        //     sourceHash: props.imageHash,
+        //     repositoryName: props.reposName
+        // });
         //======================================================================
-        // Docker image assets - repository specification end
+        // [@aws-cdk/core Stack.synthesizer] Docker image assets - repository specification end
         //======================================================================
 
         //======================================================================
