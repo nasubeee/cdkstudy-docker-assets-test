@@ -29,11 +29,12 @@ export class AssetsStack extends cdk.Stack {
         //======================================================================
         // [@aws-cdk/aws-ecr-assets] Docker image assets - repository specification
         //======================================================================
-        const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
-            directory: path.join(__dirname, 'containers'),
-            repositoryName: props.reposName,
-            extraHash: props.imageHash,
-        });
+        // [Warning at /assets/docker-image] DockerImageAsset.repositoryName is deprecated. Override "core.Stack.addDockerImageAsset" to control asset locations
+        // const imageAsset = new assets.DockerImageAsset(this, `docker-image`, {
+        //     directory: path.join(__dirname, 'containers'),
+        //     repositoryName: props.reposName,
+        //     extraHash: props.imageHash,
+        // });
         //======================================================================
         // [@aws-cdk/aws-ecr-assets] Docker image assets - repository specification end
         //======================================================================
@@ -41,11 +42,11 @@ export class AssetsStack extends cdk.Stack {
         //======================================================================
         // [@aws-cdk/core Stack.synthesizer] Docker image assets - repository specification
         //======================================================================
-        // this.synthesizer.addDockerImageAsset({
-        //     directoryName: path.join(__dirname, 'containers'),
-        //     sourceHash: props.imageHash,
-        //     repositoryName: props.reposName
-        // });
+        this.synthesizer.addDockerImageAsset({
+            directoryName: path.join(__dirname, 'containers'),
+            sourceHash: props.imageHash,
+            repositoryName: props.reposName
+        });
         //======================================================================
         // [@aws-cdk/core Stack.synthesizer] Docker image assets - repository specification end
         //======================================================================
